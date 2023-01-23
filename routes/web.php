@@ -20,3 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/* Controlador para detectar cambio de idiomas */
+Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@swap')->name('lang.swap');
+
