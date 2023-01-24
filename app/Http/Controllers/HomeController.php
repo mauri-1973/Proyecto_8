@@ -33,7 +33,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        session(['type' => Auth::user()->type]);
+        
         return view('home');
     }
 
@@ -47,12 +47,30 @@ class HomeController extends Controller
 
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                            $btn = '<button onclick="editarus(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button><br><button onclick="deleteus(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Eliminar</button>';
-                            return $btn;
+                            if(Auth::user()->id != $row->id)
+                            {
+                                $btn = '<button onclick="editarus(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button><br><button onclick="deleteus(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Eliminar</button>';
+                                return $btn;
+                            }
+                            else
+                            {
+                                $btn = '<button onclick="editarus(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button>';
+                                return $btn;
+                            }
                     })
                     ->addColumn('action1', function($row){
-                            $btn = '<button onclick="history(\''.Crypt::encrypt($row->id).'\')" class="history btn btn-success"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Historial</button><br><button onclick="addveh(\''.Crypt::encrypt($row->id).'\')" class="addveh btn btn-dark"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Agregar Vehículo</button>';
+                            $data = Vehiculos::select('*')->where(["users_id_veh" => $row->id])->count();
+                            switch (true) {
+                                case ($data > 0):
+                                    $btn = '<button onclick="history(\''.Crypt::encrypt($row->id).'\')" class="history btn btn-success"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Historial</button><br><button onclick="addveh(\''.Crypt::encrypt($row->id).'\')" class="addveh btn btn-dark"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Agregar Vehículo</button>';
                             return $btn;
+                                break;
+                                default:
+                                    $btn = '<button onclick="addveh(\''.Crypt::encrypt($row->id).'\')" class="addveh btn btn-dark"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Agregar Vehículo</button>';
+                                return $btn;
+                                break;
+                            }
+                            
                     })
                     ->rawColumns(['action', 'action1'])
                     ->make(true);
@@ -124,6 +142,82 @@ class HomeController extends Controller
         ], $messages);
         $user = User::where(['id' => $id])->update(['name' => $request->name, 'email' => $request->email]);
         return redirect()->back()->with(['message' => trans('messages.lang12').'  Nombre: '.$request->name.' . Email : '.$request->email]);
-        dd($id);
+    }
+    public function eliusid(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $user = User::where(['id' => $id])->get();
+        $user->restore();
+        dd("ok");
+        $messages = [
+            'name.required' => 'El nombre de usuario es obligatorio',
+            'name.string' =>'El nombre de usuario debe ser una cadena de texto.',
+            'name.min' => 'El mínimo requerido es de 2 caracteres.',
+            'name.max' => 'El máximo requerido es hasta 50 caracteres.',
+            'email.required' => 'El email es obligatorio',
+            'email.string' => 'El email debe ser una cadena de texto',
+            'email.email' => 'El email no tiene el formato correcto',
+            'email.max' => 'El máximo requerido es hasta 255 caracteres.',
+            'email.unique' => 'El email ingresado ya se encuentra registrado.',
+        ];
+        $validator = $request->validate([
+            'name' => ['required', 'string', 'max:50', 'min:2'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
+        ], $messages);
+        $user = User::where(['id' => $id])->delete();
+        return redirect()->back()->with(['message' => trans('messages.lang12').'  Nombre: '.$request->name.' . Email : '.$request->email]);
+    }
+    public function addveh(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $messages = [
+            'marca.required' => 'El nombre del modelo es obligatorio',
+            'marca.min' => 'El mínimo requerido es de 2 caracteres.',
+            'modelo.max' => 'El máximo requerido es hasta 50 caracteres.',
+            'modelo.required' => 'El nombre del modelo es obligatorio',
+            'modelo.min' => 'El mínimo requerido es de 2 caracteres.',
+            'modelo.max' => 'El máximo requerido es hasta 50 caracteres.',
+            'patente.required' => 'La patente es obligatoria',
+            'patente.min' => 'El mínimo requerido es de 6 caracteres.',
+            'patente.max' => 'El máximo requerido es hasta 6 caracteres.',
+            'patente.unique' => 'Esta patente ya fue ingresada.',
+            'annio.required' => 'El año es abligatorio.',
+            'annio.numeric' => 'El año debe ser un valor numérico.',
+            'annio.max' => 'El máximo valor para el año es 2023',
+            'annio.min' => 'El mínimo valor para el año es 1950',
+            'precio.required' => 'El precio es abligatorio.',
+            'precio.numeric' => 'El precio debe ser un valor numérico.',
+            'precio.max' => 'El máximo valor para el precio es 10',
+            'precio.min' => 'El mínimo valor para el precio es 999999999999',
+        ];
+        $validator = $request->validate([
+            'marca' => ['required', 'string', 'max:50', 'min:2'],
+            'modelo' => ['required', 'string', 'max:50', 'min:2'],
+            'patente' => ['required', 'string', 'max:6', 'min:6', 'unique:vehiculos'],
+            'annio' => ['required', 'numeric', 'max:2023', 'min:1950'],
+            'precio' => ['required', 'numeric', 'max:999999999999', 'min:10'],
+
+        ], $messages);
+        $user = Vehiculos::create(['marca' => $request->marca, 'modelo' => $request->modelo, 'patente' => $request->patente, 'annio' => $request->annio, 'precio' => $request->precio, 'users_id_veh' => $id]);
+        return redirect()->back()->with(['message' => trans('messages.lang12').'  Nombre: '.$request->name.' . Email : '.$request->email]);
+    }
+    public function histusveh(Request $request)
+    {
+        if ($request->ajax()) {
+            
+            $id = Crypt::decrypt($request->id);
+            
+            $data = Vehiculos::select(array('id','marca','modelo', 'patente', 'annio'))->where(["users_id_veh" => $id]);
+            return Datatables::of($data)
+
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '<button onclick="editarusveh(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button><br><button onclick="deleteus(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Eliminar</button>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+
+        }
     }
 }

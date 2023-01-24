@@ -16,4 +16,16 @@ return [
     'lang10' => 'Editar Usuario',
     'lang11' => 'Tenemos un error al editar el Usuario',
     'lang12' => 'Usuario editado correctamente',
+    'lang13' => 'Eliminar Usuario',
+    'lang14' => 'Tenemos un error al elimunar al Usuario',
+    'lang15' => 'Agregar Vehículo',
+    'lang16' => 'Marca',
+    'lang17' => 'Modelo',
+    'lang18' => 'Patente',
+    'lang19' => 'Año',
+    'lang20' => 'Precio',
+    'lang21' => 'Formato AZ9999 Sin giones',
+    'lang22' => 'Historial Vehículos',
+    'lang23' => 'Generar PDF',
+    
 ];
