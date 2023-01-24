@@ -24,7 +24,9 @@ Route::post('datatables-inicial', [App\Http\Controllers\HomeController::class, '
 Route::post('registro-de-usuario', [App\Http\Controllers\HomeController::class, 'regus'])->name('registro-de-usuario');
 Route::post('editar-usuario', [App\Http\Controllers\HomeController::class, 'editus'])->name('editar-usuario');
 Route::post('edicion-de-usuario-id', [App\Http\Controllers\HomeController::class, 'editusid'])->name('edicion-de-usuario-id');
-
+Route::post('eliminar-usuario-id', [App\Http\Controllers\HomeController::class, 'eliusid'])->name('eliminar-usuario-id');
+Route::post('agregar-vehiculo', [App\Http\Controllers\HomeController::class, 'addveh'])->name('agregar-vehiculo');
+Route::post('historial-vehiculo-usuario', [App\Http\Controllers\HomeController::class, 'histusveh'])->name('historial-vehiculo-usuario');
 /* Controlador para detectar cambio de idiomas */
 Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@swap')->name('lang.swap');
 

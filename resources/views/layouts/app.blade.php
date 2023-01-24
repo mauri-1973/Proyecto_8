@@ -35,6 +35,7 @@
     
 @if(session()->has('type') && session('type') == "admin")
 <script type="text/javascript">
+        
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -117,20 +118,89 @@
         }
         function deleteus(id)
         {
-            $('#modalgenerico').modal("show");
+            var form = new FormData();
+            form.append("_token", "{{ csrf_token() }}");
+            form.append("id", id);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'post',
+                url: '{{route("editar-usuario")}}',
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                data: form,
+                success: function(response){
+                    console.log(response);
+
+                    if(response.status == "ok")
+                    {
+                        $('#titulogenerico').html("{!! trans('messages.lang13') !!}");
+                        $('#bodygenerico').html('<form method="POST" action="{{ route('eliminar-usuario-id') }}" ><input type="hidden" name="_token" value="{{ csrf_token() }}" /><input type="hidden" name="id" value="'+response.id+'" /><div class="row mb-3"><label for="name" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang6') !!}</label><div class="col-md-6"><input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="'+response.nombre+'" required autocomplete="name" autofocus readonly>@error('name')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="email" class="col-md-4 col-form-label text-md-end">Email</label><div class="col-md-6"><input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="'+response.email+'" required autocomplete="email" readonly>@error('email')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-0"><div class="col-md-6 offset-md-4"><button type="submit" class="btn btn-danger">{!! trans('messages.lang13') !!}</button></div></div></form>');
+                        $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
+                        $('#modalgenerico').modal("show");
+                    }
+                    else
+                    {
+                        $('#titulogenerico').html("{!! trans('messages.lang13') !!}");
+                        $('#bodygenerico').html("{!! trans('messages.lang14') !!}");
+                        $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
+                        $('#modalgenerico').modal("show");
+                    }
+                    
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
         }
         function history(id)
         {
+            $('#titulogenerico').html("{!! trans('messages.lang22') !!}");
+            $('#bodygenerico').html('<div class="card"><div class="card-header"></div><div class="card-body"><button onclick="generarpfp('+id+')" type="button" class="btn btn-primary mb-4">{!! trans('messages.lang23') !!}</button><table class="table table-bordered data-table nowrap" id="tabla-dos" style="width:100%"><thead><tr><th style="width:10%">id_veh</th><th style="width:20%">{!! trans('messages.lang16') !!}</th><th style="width:20%">{!! trans('messages.lang17') !!}</th><th style="width:15%">{!! trans('messages.lang18') !!}</th><th style="width:15%">{!! trans('messages.lang19') !!}</th><th style="width:20%">Acciones Vehículos</th></tr></thead><tbody></tbody></table></div></div>');
+            $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
             $('#modalgenerico').modal("show");
+            $('#tabla-dos').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                "url": '{{ route("historial-vehiculo-usuario") }}',
+                "type": "POST",
+                "data": { id }
+                },
+                "responsive": true,
+                "pageLength": 10,
+                "columns": [
+                                {     "data"     :     "id"  },  
+                                {     "data"     :     "marca"},  
+                                {     "data"     :     "modelo"}, 
+                                {     "data"     :     "patente"}, 
+                                {     "data"     :     "annio"},
+                                {     "data"     :     "action"},
+                ],
+                "language": {
+                            "url": "{{url('/')}}/json/{!! trans('messages.lang3') !!}.json"
+                }
+            } );
         }
         function addveh(id)
         {
+            $('#titulogenerico').html("{!! trans('messages.lang15') !!}");
+            $('#bodygenerico').html('<form method="POST" action="{{ route('agregar-vehiculo') }}" ><input type="hidden" name="_token" value="{{ csrf_token() }}" /><input type="hidden" name="id" value="'+id+'" /><div class="row mb-3"><label for="marca" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang16') !!}</label><div class="col-md-6"><input id="marca" type="text" class="form-control @error('marca') is-invalid @enderror" name="marca" value="{{ old('marca') }}" required autocomplete="marca" autofocus>@error('marca')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="modelo" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang17') !!}</label><div class="col-md-6"><input id="modelo" type="text" class="form-control @error('modelo') is-invalid @enderror" name="modelo" value="{{ old('modelo') }}" required autocomplete="modelo" autofocus>@error('modelo')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="patente" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang18') !!}</label><div class="col-md-6"><input id="patente" type="text" class="form-control @error('patente') is-invalid @enderror" minlength="6" maxlength="6" name="patente" value="{{ old('patente') }}" required pattern="[A-Z]{2}[0-9]{4}" placeholder="{!! trans('messages.lang21') !!}" autocomplete="patente" autofocus>@error('patente')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="annio" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang19') !!}</label><div class="col-md-6"><input id="annio" type="text" class="form-control @error('annio') is-invalid @enderror" minlength="4" maxlength="4" name="annio" value="{{ old('annio') }}" required pattern="[0-9]{4}" autocomplete="annio" autofocus placeholder="Min: 1950. Max: 2023">@error('annio')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="precio" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang20') !!}</label><div class="col-md-6"><input id="precio" type="text" class="form-control @error('precio') is-invalid @enderror" minlength="2" maxlength="12" name="precio" value="{{ old('precio') }}" required pattern="[0-9]{2,12}" autocomplete="precio" autofocus placeholder="Min: 10. Max: 999999999999">@error('precio')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-0"><div class="col-md-6 offset-md-4"><button type="submit" class="btn btn-primary">{!! trans('messages.lang15') !!}</button></div></div></form>');
+            $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
             $('#modalgenerico').modal("show");
         }
+
         function cerrarmodal()
         {
             $('#modalgenerico').modal("hide");
         }
+        $('#modalgenerico').on('show.bs.modal', function (e) {
+            
+            
+        })
+        
     </script>
 @else
 
