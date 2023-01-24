@@ -23,6 +23,7 @@ class Vehiculos extends Authenticatable
     protected $fillable = [
         'users_id_veh',
         'marca',
+        'modelo',
         'patente',
         'annio',
         'precio',
