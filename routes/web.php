@@ -28,6 +28,10 @@ Route::post('eliminar-usuario-id', [App\Http\Controllers\HomeController::class, 
 Route::post('agregar-vehiculo', [App\Http\Controllers\HomeController::class, 'addveh'])->name('agregar-vehiculo');
 Route::post('historial-vehiculo-usuario', [App\Http\Controllers\HomeController::class, 'histusveh'])->name('historial-vehiculo-usuario');
 Route::post('generar-historico-usuario', [App\Http\Controllers\HomeController::class, 'pdf'])->name('generar-historico-usuario');
+Route::post('editar-vehiculo-id', [App\Http\Controllers\HomeController::class, 'editvehid'])->name('editar-vehiculo-id');
+Route::post('editar-vehiculo-usuario-id', [App\Http\Controllers\HomeController::class, 'edidvehusid'])->name('editar-vehiculo-usuario-id');
+Route::post('eliminar-vehiculo-usuario-id', [App\Http\Controllers\HomeController::class, 'eliusvehid'])->name('eliminar-vehiculo-usuario-id');
+
 
 /* Controlador para detectar cambio de idiomas */
 Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@swap')->name('lang.swap');

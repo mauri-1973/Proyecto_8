@@ -30,6 +30,10 @@ return [
     'lang24' => 'Histórico de Vehículos de ',
     'lang25' => 'Vehículos Asociados',
     'lang26' => 'Documento en PDF',
+    'lang27' => 'Editar Vehículo',
+    'lang28' => 'Vehículo editado correctamente',
+    'lang29' => 'Eliminar Vehículo',
+    'lang30' => 'Vehículo editado correctamente',
     
     
 ];
