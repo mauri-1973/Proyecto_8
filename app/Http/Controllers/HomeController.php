@@ -12,6 +12,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Crypt;
+use PDF;
 use DataTables;
 
 class HomeController extends Controller
@@ -219,5 +220,15 @@ class HomeController extends Controller
                     ->make(true);
 
         }
+    }
+    public function pdf(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $user = User::select('*')->where(["id" => $id])->first();
+        $veh = Vehiculos::select('*')->where(["users_id_veh" => $id])->get();
+        $pdfContent = PDF::loadView('pdf.historico',["veh" => $veh, "user" => $user]);
+        $pdfContent->setPaper('a4', 'portrait');
+        $pdfContent->download('archivo-pdf.pdf');
+        return json_encode(["base64" => 'data:application/pdf;base64,'.base64_encode($pdfContent->stream())]);
     }
 }

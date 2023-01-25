@@ -27,4 +27,7 @@ return [
     'lang21' => 'AZ9999 format without hyphens',
     'lang22' => 'Vehicle History',
     'lang23' => 'Generate PDF',
+    'lang24' => 'Vehicle History of ',
+    'lang25' => 'Associated Vehicles',
+    'lang26' => 'PDF Document',
 ];
