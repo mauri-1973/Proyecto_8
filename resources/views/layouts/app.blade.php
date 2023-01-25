@@ -220,6 +220,85 @@
                 }
             });
         }
+        function editarusveh(id)
+        {
+            var form = new FormData();
+            form.append("_token", "{{ csrf_token() }}");
+            form.append("id", id);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'post',
+                url: '{{route("editar-vehiculo-id")}}',
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                data: form,
+                success: function(response){
+                    console.log(response);
+
+                    if(response.status == "ok")
+                    {
+                        $('#titulogenerico').html("{!! trans('messages.lang27') !!}");
+                        $('#bodygenerico').html('<form method="POST" action="{{ route('editar-vehiculo-usuario-id') }}" ><input type="hidden" name="_token" value="{{ csrf_token() }}" /><input type="hidden" name="id" value="'+id+'" /><div class="row mb-3"><label for="marca" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang16') !!}</label><div class="col-md-6"><input id="marca" type="text" class="form-control @error('marca') is-invalid @enderror" name="marca" value="'+response.marca+'" required autocomplete="marca" autofocus>@error('marca')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="modelo" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang17') !!}</label><div class="col-md-6"><input id="modelo" type="text" class="form-control @error('modelo') is-invalid @enderror" name="modelo" value="'+response.modelo+'" required autocomplete="modelo" autofocus>@error('modelo')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="patente" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang18') !!}</label><div class="col-md-6"><input id="patente" type="text" class="form-control @error('patente') is-invalid @enderror" minlength="6" maxlength="6" name="patente" value="'+response.patente+'" required pattern="[A-Z]{2}[0-9]{4}" placeholder="{!! trans('messages.lang21') !!}" autocomplete="patente" autofocus>@error('patente')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="annio" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang19') !!}</label><div class="col-md-6"><input id="annio" type="text" class="form-control @error('annio') is-invalid @enderror" minlength="4" maxlength="4" name="annio" value="'+response.annio+'" required pattern="[0-9]{4}" autocomplete="annio" autofocus placeholder="Min: 1950. Max: 2023">@error('annio')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="precio" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang20') !!}</label><div class="col-md-6"><input id="precio" type="text" class="form-control @error('precio') is-invalid @enderror" minlength="2" maxlength="12" name="precio" value="'+response.precio+'" required pattern="[0-9]{2,12}" autocomplete="precio" autofocus placeholder="Min: 10. Max: 999999999999">@error('precio')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-0"><div class="col-md-6 offset-md-4"><button type="submit" class="btn btn-primary">{!! trans('messages.lang27') !!}</button></div></div></form>');
+                        $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
+                        $('#modalgenerico').modal("show");
+                    }
+                    else
+                    {
+                        $('#titulogenerico').html("{!! trans('messages.lang13') !!}");
+                        $('#bodygenerico').html("{!! trans('messages.lang14') !!}");
+                        $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
+                        $('#modalgenerico').modal("show");
+                    }
+                    
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+            
+        }
+        function deleteusvhe(id)
+        {
+            var form = new FormData();
+            form.append("_token", "{{ csrf_token() }}");
+            form.append("id", id);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'post',
+                url: '{{route("editar-vehiculo-id")}}',
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                data: form,
+                success: function(response){
+                    console.log(response);
+
+                    if(response.status == "ok")
+                    {
+                        $('#titulogenerico').html("{!! trans('messages.lang29') !!}");
+                        $('#bodygenerico').html('<form method="POST" action="{{ route('eliminar-vehiculo-usuario-id') }}" ><input type="hidden" name="_token" value="{{ csrf_token() }}" /><input type="hidden" name="id" value="'+id+'" /><div class="row mb-3"><label for="marca" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang16') !!}</label><div class="col-md-6"><input id="marca" type="text" class="form-control @error('marca') is-invalid @enderror" name="marca" value="'+response.marca+'" required autocomplete="marca" autofocus readonly>@error('marca')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="modelo" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang17') !!}</label><div class="col-md-6"><input id="modelo" type="text" class="form-control @error('modelo') is-invalid @enderror" name="modelo" value="'+response.modelo+'" required autocomplete="modelo" autofocus readonly>@error('modelo')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="patente" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang18') !!}</label><div class="col-md-6"><input id="patente" type="text" class="form-control @error('patente') is-invalid @enderror" minlength="6" maxlength="6" name="patente" value="'+response.patente+'" required pattern="[A-Z]{2}[0-9]{4}" placeholder="{!! trans('messages.lang21') !!}" autocomplete="patente" autofocus readonly>@error('patente')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="annio" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang19') !!}</label><div class="col-md-6"><input id="annio" type="text" class="form-control @error('annio') is-invalid @enderror" minlength="4" maxlength="4" name="annio" value="'+response.annio+'" required pattern="[0-9]{4}" autocomplete="annio" autofocus placeholder="Min: 1950. Max: 2023" readonly>@error('annio')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-3"><label for="precio" class="col-md-4 col-form-label text-md-end">{!! trans('messages.lang20') !!}</label><div class="col-md-6"><input id="precio" type="text" class="form-control @error('precio') is-invalid @enderror" minlength="2" maxlength="12" name="precio" value="'+response.precio+'" required pattern="[0-9]{2,12}" autocomplete="precio" autofocus placeholder="Min: 10. Max: 999999999999" readonly>@error('precio')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror</div></div><div class="row mb-0"><div class="col-md-6 offset-md-4"><button type="submit" class="btn btn-danger">{!! trans('messages.lang29') !!}</button></div></div></form>');
+                        $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
+                        $('#modalgenerico').modal("show");
+                    }
+                    else
+                    {
+                        $('#titulogenerico').html("{!! trans('messages.lang13') !!}");
+                        $('#bodygenerico').html("{!! trans('messages.lang14') !!}");
+                        $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
+                        $('#modalgenerico').modal("show");
+                    }
+                    
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        }
         function cerrarmodal()
         {
             $('#modalgenerico').modal("hide");
