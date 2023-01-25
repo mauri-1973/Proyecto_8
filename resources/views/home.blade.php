@@ -22,10 +22,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th style="width:19%">Name</th>
+                                <th style="width:19%">{!! trans('messages.lang6') !!}</th>
                                 <th style="width:25%">Email</th>
-                                <th style="width:28%">Acciones Usuario</th>
-                                <th style="width:28%">Acciones Vehículos</th>
+                                <th style="width:28%">{!! trans('messages.lang31') !!}</th>
+                                <th style="width:28%">{!! trans('messages.lang32') !!}</th>
                             </tr>
 
                         </thead>
