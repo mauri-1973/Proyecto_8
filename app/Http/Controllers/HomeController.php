@@ -34,7 +34,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
+        session(['type' => Auth::user()->type]);
         return view('home');
     }
 
