@@ -34,6 +34,8 @@ return [
     'lang28' => 'Vehículo editado correctamente',
     'lang29' => 'Eliminar Vehículo',
     'lang30' => 'Vehículo editado correctamente',
+    'lang31' => 'Acciones Usuario',
+    'lang32' => 'Acciones Vehívulos',
     
     
 ];
