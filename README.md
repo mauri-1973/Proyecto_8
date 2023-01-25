@@ -1,3 +1,34 @@
+## Instrucciones
+
+- git clone https://github.com/mauri-1973/Proyecto_8.git
+
+- cd Proyecto_8
+
+- composer update
+
+- Modificar el archivo .env.example para acceder a la base de datos
+
+- php artisan key:generate
+
+- php artisan migrate
+
+- npm run dev
+
+- php artisan serve
+
+- Acceder al navegador con la siguiente url http://localhost:8000 .Acceder al registro de usurios y crear uno
+
+- Funcionalidades Crud Usuarios, Crud Vehículos, Plataforma multi-idiomas (Ingles-Español), Creación de documentos en formato PDF, roles separados para los usuarios que se registran y los que se crean desde el crud.
+
+- php artisan test (Pruebas unitarias)
+
+
+
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
