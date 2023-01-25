@@ -6,11 +6,13 @@
 
 - composer update
 
-- Modificar el archivo .env.example para acceder a la base de datos
+- Renombrar (.env) el archivo .env.example para luego Modificar el acceso a la base de datos
 
 - php artisan key:generate
 
 - php artisan migrate
+
+- npm install
 
 - npm run dev
 
@@ -18,7 +20,7 @@
 
 - Acceder al navegador con la siguiente url http://localhost:8000 .Acceder al link superior "register", completar el formulario y crear un usuario.
 
-- Funcionalidades Crud Usuarios, Crud Vehículos, Plataforma multi-idiomas (Ingles-Español), Creación de documentos en formato PDF, roles separados para los usuarios que se registran y los que se crean desde el crud.
+- Funcionalidades Crud Usuarios, Crud Vehículos, Plataforma multi-idiomas (Ingles-Español), Creación de documentos en formato PDF, roles separados para los usuarios que se registran y los que se crean desde el crud, Softdelete etc.
 
 - php artisan test (Pruebas unitarias)
 
