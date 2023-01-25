@@ -50,12 +50,12 @@ class HomeController extends Controller
                     ->addColumn('action', function($row){
                             if(Auth::user()->id != $row->id)
                             {
-                                $btn = '<button onclick="editarus(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button><br><button onclick="deleteus(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Eliminar</button>';
+                                $btn = '<button onclick="editarus(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang33').'</button><br><button onclick="deleteus(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang34').'</button>';
                                 return $btn;
                             }
                             else
                             {
-                                $btn = '<button onclick="editarus(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button>';
+                                $btn = '<button onclick="editarus(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang33').'</button>';
                                 return $btn;
                             }
                     })
@@ -63,11 +63,11 @@ class HomeController extends Controller
                             $data = Vehiculos::select('*')->where(["users_id_veh" => $row->id])->count();
                             switch (true) {
                                 case ($data > 0):
-                                    $btn = '<button onclick="history(\''.Crypt::encrypt($row->id).'\')" class="history btn btn-success"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Historial</button><br><button onclick="addveh(\''.Crypt::encrypt($row->id).'\')" class="addveh btn btn-dark"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Agregar Vehículo</button>';
+                                    $btn = '<button onclick="history(\''.Crypt::encrypt($row->id).'\')" class="history btn btn-success"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang35').'</button><br><button onclick="addveh(\''.Crypt::encrypt($row->id).'\')" class="addveh btn btn-dark"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang15').'</button>';
                             return $btn;
                                 break;
                                 default:
-                                    $btn = '<button onclick="addveh(\''.Crypt::encrypt($row->id).'\')" class="addveh btn btn-dark"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Agregar Vehículo</button>';
+                                    $btn = '<button onclick="addveh(\''.Crypt::encrypt($row->id).'\')" class="addveh btn btn-dark"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang15').'</button>';
                                 return $btn;
                                 break;
                             }
@@ -210,7 +210,7 @@ class HomeController extends Controller
 
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '<button onclick="editarusveh(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button><br><button onclick="deleteusvhe(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Eliminar</button>';
+                        $btn = '<button onclick="editarusveh(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang33').'</button><br><button onclick="deleteusvhe(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">'.trans('messages.lang34').'</button>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
