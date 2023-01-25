@@ -157,8 +157,9 @@
         }
         function history(id)
         {
+            $("#idpdf").val(id);
             $('#titulogenerico').html("{!! trans('messages.lang22') !!}");
-            $('#bodygenerico').html('<div class="card"><div class="card-header"></div><div class="card-body"><button onclick="generarpfp('+id+')" type="button" class="btn btn-primary mb-4">{!! trans('messages.lang23') !!}</button><table class="table table-bordered data-table nowrap" id="tabla-dos" style="width:100%"><thead><tr><th style="width:10%">id_veh</th><th style="width:20%">{!! trans('messages.lang16') !!}</th><th style="width:20%">{!! trans('messages.lang17') !!}</th><th style="width:15%">{!! trans('messages.lang18') !!}</th><th style="width:15%">{!! trans('messages.lang19') !!}</th><th style="width:20%">Acciones Vehículos</th></tr></thead><tbody></tbody></table></div></div>');
+            $('#bodygenerico').html('<div class="card"><div class="card-header"></div><div class="card-body"><button onclick="generarpfp()" type="button" class="btn btn-primary mb-4">{!! trans('messages.lang23') !!}</button><table class="table table-bordered data-table nowrap" id="tabla-dos" style="width:100%"><thead><tr><th style="width:10%">id_veh</th><th style="width:20%">{!! trans('messages.lang16') !!}</th><th style="width:20%">{!! trans('messages.lang17') !!}</th><th style="width:15%">{!! trans('messages.lang18') !!}</th><th style="width:15%">{!! trans('messages.lang19') !!}</th><th style="width:20%">Acciones Vehículos</th></tr></thead><tbody></tbody></table></div></div>');
             $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
             $('#modalgenerico').modal("show");
             $('#tabla-dos').DataTable( {
@@ -191,15 +192,38 @@
             $('#footergenerico').html('<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarmodal()">{!! trans('messages.lang5') !!}</button>');
             $('#modalgenerico').modal("show");
         }
-
+        function generarpfp()
+        {
+            var form = new FormData();
+            form.append("_token", "{{ csrf_token() }}");
+            form.append("id", $("#idpdf").val());
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'post',
+                url: '{{route("generar-historico-usuario")}}',
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                data: form,
+                success: function(response){
+                    const linkSource = response.base64;
+                    const downloadLink = document.createElement("a");
+                    const fileName = "Archivo-PDF.pdf";
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        }
         function cerrarmodal()
         {
             $('#modalgenerico').modal("hide");
         }
-        $('#modalgenerico').on('show.bs.modal', function (e) {
-            
-            
-        })
         
     </script>
 @else
