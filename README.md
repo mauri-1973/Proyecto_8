@@ -16,7 +16,7 @@
 
 - php artisan serve
 
-- Acceder al navegador con la siguiente url http://localhost:8000 .Acceder al registro de usurios y crear uno
+- Acceder al navegador con la siguiente url http://localhost:8000 .Acceder al link superior "register", completar el formulario y crear un usuario.
 
 - Funcionalidades Crud Usuarios, Crud Vehículos, Plataforma multi-idiomas (Ingles-Español), Creación de documentos en formato PDF, roles separados para los usuarios que se registran y los que se crean desde el crud.
 
