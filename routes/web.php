@@ -27,6 +27,8 @@ Route::post('edicion-de-usuario-id', [App\Http\Controllers\HomeController::class
 Route::post('eliminar-usuario-id', [App\Http\Controllers\HomeController::class, 'eliusid'])->name('eliminar-usuario-id');
 Route::post('agregar-vehiculo', [App\Http\Controllers\HomeController::class, 'addveh'])->name('agregar-vehiculo');
 Route::post('historial-vehiculo-usuario', [App\Http\Controllers\HomeController::class, 'histusveh'])->name('historial-vehiculo-usuario');
+Route::post('generar-historico-usuario', [App\Http\Controllers\HomeController::class, 'pdf'])->name('generar-historico-usuario');
+
 /* Controlador para detectar cambio de idiomas */
 Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@swap')->name('lang.swap');
 

@@ -27,5 +27,9 @@ return [
     'lang21' => 'Formato AZ9999 Sin giones',
     'lang22' => 'Historial Vehículos',
     'lang23' => 'Generar PDF',
+    'lang24' => 'Histórico de Vehículos de ',
+    'lang25' => 'Vehículos Asociados',
+    'lang26' => 'Documento en PDF',
+    
     
 ];

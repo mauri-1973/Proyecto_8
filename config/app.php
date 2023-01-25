@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         //Integración datatables
         Yajra\DataTables\DataTablesServiceProvider::class,
+        //Integración dompdf
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -231,6 +233,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        //librerá dompdf
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 
