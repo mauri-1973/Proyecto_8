@@ -147,9 +147,6 @@ class HomeController extends Controller
     public function eliusid(Request $request)
     {
         $id = Crypt::decrypt($request->id);
-        $user = User::where(['id' => $id])->get();
-        $user->restore();
-        dd("ok");
         $messages = [
             'name.required' => 'El nombre de usuario es obligatorio',
             'name.string' =>'El nombre de usuario debe ser una cadena de texto.',
@@ -213,7 +210,7 @@ class HomeController extends Controller
 
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '<button onclick="editarusveh(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button><br><button onclick="deleteus(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Eliminar</button>';
+                        $btn = '<button onclick="editarusveh(\''.Crypt::encrypt($row->id).'\')" class="editus btn btn-primary" style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Editar</button><br><button onclick="deleteusvhe(\''.Crypt::encrypt($row->id).'\')" class="deleteus btn btn-danger"  style="width:100% !important;padding-top:2px;padding-bottom:2px;margin-bottom:1px;">Eliminar</button>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -230,5 +227,91 @@ class HomeController extends Controller
         $pdfContent->setPaper('a4', 'portrait');
         $pdfContent->download('archivo-pdf.pdf');
         return json_encode(["base64" => 'data:application/pdf;base64,'.base64_encode($pdfContent->stream())]);
+    }
+
+    public function editvehid(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $data = Vehiculos::select(array('id','marca','modelo','patente', 'annio', 'precio'))->where(["id" => $id])->count();
+        switch (true) {
+            case ($data == 0):
+                return json_encode(array("status" => 0, "id" => "", "nombre" => "", "email" => ""));
+            break;
+            case ($data == 1):
+                $data = Vehiculos::select(array('id','marca','modelo','patente', 'annio', 'precio'))->where(["id" => $id])->first();
+                return json_encode(array("status" => "ok", "id" => Crypt::encrypt($id), "marca" => $data->marca, "modelo" => $data->modelo, "patente" => $data->patente, "annio" => $data->annio, "precio" => $data->precio));
+            break;
+            default:
+            return json_encode(array("status" => 0, "id" => "", "nombre" => "", "email" => ""));
+            break;
+        }
+    }
+    public function edidvehusid(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $messages = [
+            'marca.required' => 'El nombre del modelo es obligatorio',
+            'marca.min' => 'El mínimo requerido es de 2 caracteres.',
+            'modelo.max' => 'El máximo requerido es hasta 50 caracteres.',
+            'modelo.required' => 'El nombre del modelo es obligatorio',
+            'modelo.min' => 'El mínimo requerido es de 2 caracteres.',
+            'modelo.max' => 'El máximo requerido es hasta 50 caracteres.',
+            'patente.required' => 'La patente es obligatoria',
+            'patente.min' => 'El mínimo requerido es de 6 caracteres.',
+            'patente.max' => 'El máximo requerido es hasta 6 caracteres.',
+            'patente.unique' => 'Esta patente ya fue ingresada.',
+            'annio.required' => 'El año es abligatorio.',
+            'annio.numeric' => 'El año debe ser un valor numérico.',
+            'annio.max' => 'El máximo valor para el año es 2023',
+            'annio.min' => 'El mínimo valor para el año es 1950',
+            'precio.required' => 'El precio es abligatorio.',
+            'precio.numeric' => 'El precio debe ser un valor numérico.',
+            'precio.max' => 'El máximo valor para el precio es 10',
+            'precio.min' => 'El mínimo valor para el precio es 999999999999',
+        ];
+        $validator = $request->validate([
+            'marca' => ['required', 'string', 'max:50', 'min:2'],
+            'modelo' => ['required', 'string', 'max:50', 'min:2'],
+            'patente' => ['required', 'string', 'max:6', 'min:6', Rule::unique('vehiculos')->ignore($id)],
+            'annio' => ['required', 'numeric', 'max:2023', 'min:1950'],
+            'precio' => ['required', 'numeric', 'max:999999999999', 'min:10'],
+
+        ], $messages);
+        $user = Vehiculos::where(['id' => $id])->update(['marca' => $request->marca, 'modelo' => $request->modelo, 'patente' => $request->patente, 'annio' => $request->annio, 'precio' => $request->precio]);
+        return redirect()->back()->with(['message' => trans('messages.lang28')]);
+    }
+    public function eliusvehid(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $messages = [
+            'marca.required' => 'El nombre del modelo es obligatorio',
+            'marca.min' => 'El mínimo requerido es de 2 caracteres.',
+            'modelo.max' => 'El máximo requerido es hasta 50 caracteres.',
+            'modelo.required' => 'El nombre del modelo es obligatorio',
+            'modelo.min' => 'El mínimo requerido es de 2 caracteres.',
+            'modelo.max' => 'El máximo requerido es hasta 50 caracteres.',
+            'patente.required' => 'La patente es obligatoria',
+            'patente.min' => 'El mínimo requerido es de 6 caracteres.',
+            'patente.max' => 'El máximo requerido es hasta 6 caracteres.',
+            'patente.unique' => 'Esta patente ya fue ingresada.',
+            'annio.required' => 'El año es abligatorio.',
+            'annio.numeric' => 'El año debe ser un valor numérico.',
+            'annio.max' => 'El máximo valor para el año es 2023',
+            'annio.min' => 'El mínimo valor para el año es 1950',
+            'precio.required' => 'El precio es abligatorio.',
+            'precio.numeric' => 'El precio debe ser un valor numérico.',
+            'precio.max' => 'El máximo valor para el precio es 10',
+            'precio.min' => 'El mínimo valor para el precio es 999999999999',
+        ];
+        $validator = $request->validate([
+            'marca' => ['required', 'string', 'max:50', 'min:2'],
+            'modelo' => ['required', 'string', 'max:50', 'min:2'],
+            'patente' => ['required', 'string', 'max:6', 'min:6', Rule::unique('vehiculos')->ignore($id)],
+            'annio' => ['required', 'numeric', 'max:2023', 'min:1950'],
+            'precio' => ['required', 'numeric', 'max:999999999999', 'min:10'],
+
+        ], $messages);
+        $user = Vehiculos::where(['id' => $id])->delete();
+        return redirect()->back()->with(['message' => trans('messages.lang30')]);
     }
 }

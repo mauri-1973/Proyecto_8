@@ -30,4 +30,8 @@ return [
     'lang24' => 'Vehicle History of ',
     'lang25' => 'Associated Vehicles',
     'lang26' => 'PDF Document',
+    'lang27' => 'Edit Vehicle',
+    'lang28' => 'Vehicle edited successfully',
+    'lang29' => 'Delete Vehicle',
+    'lang30' => 'Vehicle edited successfully',
 ];
